@@ -5,13 +5,15 @@ import 'package:post_app/blocs/bloc_event/event_bloc.dart';
 import 'package:post_app/repository/event_repository.dart';
 import 'package:post_app/screens/home.dart';
 import 'package:post_app/service/api_service.dart';
+import 'package:post_app/utils/database_helper.dart';
 
 void main() {
   final Dio dio = Dio();
   final ApiService apiService = ApiService();
+  final DatabaseHelper dbhelper = DatabaseHelper();
 
   runApp(BlocProvider(
-    create: (context) => EventBloc(EventRepository(apiService))..add(FetchEventsEvent(2, 10)),
+    create: (context) => EventBloc(EventRepository(apiService),dbhelper)..add(FetchEventsEvent(2, 10)),
     child:  const MyApp(),
   ));
 }

@@ -10,6 +10,8 @@ class DatabaseHelper {
 
   DatabaseHelper._privateConstructor();
 
+  DatabaseHelper();
+
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDatabase();
@@ -44,7 +46,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     var events = await db.query('events');
     return events.isNotEmpty
-        ? events.map((e) => Event.fromJson(e)).toList()
+        ? events.map((e) => Event.fromDB(e)).toList()
         : [];
   }
 

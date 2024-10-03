@@ -257,6 +257,26 @@ class Event {
 
   factory Event.fromJson(String source) => Event.fromMap(json.decode(source) as Map<String, dynamic>);
 
+   factory Event.fromDB(Map<String, dynamic> json) {
+  return Event(
+    id: json['id'] as String?, // Assuming 'id' is the primary key in the DB
+    title: json['title'] as String?, // Event title
+    description: json['description'] as String?, // Event description
+    user: UserHere( // Creating a UserHere object from database values
+      id: json['userId'] as String, // User ID column in the DB
+      firstName: json['firstName'] as String, // First name column
+      lastName: json['lastName'] as String, // Last name column
+      isVerified: json['isVerified'] == 1, // DB returns 1/0 for verification
+    ),
+    eventStartAt: json['eventStartAt'] as String?, // Event start time
+    eventEndAt: json['eventEndAt'] as String?, // Event end time
+    likes: json['likes'] as int? ?? 0, // Number of likes, default to 0 if null
+    images: json['images'] != null ? List<String>.from(json['images']) : [], // List of image URLs, handle null
+    // Additional fields like registration, likedUsers, comments can be added similarly if available in your DB
+  );
+}
+
+
   @override
   String toString() {
     return 'Event(eventLocation: $eventLocation, id: $id, user: $user, description: $description, title: $title, images: $images, likedUsers: $likedUsers, comments: $comments, eventCategory: $eventCategory, eventStartAt: $eventStartAt, eventEndAt: $eventEndAt, registrationRequired: $registrationRequired, keywords: $keywords, hashTags: $hashTags, registration: $registration, likes: $likes, createdAt: $createdAt, updatedAt: $updatedAt, v: $v)';
